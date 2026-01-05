@@ -20,6 +20,19 @@ export default function BurnAnimation({ isPlaying, onComplete, children }: BurnA
     const [animationComplete, setAnimationComplete] = useState(false);
     const [fireAnimation, setFireAnimation] = useState<object | null>(null);
 
+    // Pre-generate random values using useState initializer (runs once, not during render)
+    const [sparkValues] = useState(() =>
+        Array.from({ length: 12 }, () => ({
+            initialX: Math.random() * 100 - 50,
+            initialScale: Math.random() * 0.5 + 0.5,
+            animateY: -150 - Math.random() * 100,
+            animateX: Math.random() * 200 - 100,
+            duration: 1.5 + Math.random(),
+            delay: Math.random() * 2,
+            isOrange: Math.random() > 0.5,
+        }))
+    );
+
     // Lottie 애니메이션 로드
     useEffect(() => {
         fetch('/lottie/fire.json')
@@ -122,29 +135,28 @@ export default function BurnAnimation({ isPlaying, onComplete, children }: BurnA
             <AnimatePresence>
                 {showEmbers && !animationComplete && (
                     <>
-                        {[...Array(12)].map((_, i) => (
+                        {sparkValues.map((spark, i) => (
                             <motion.div
                                 key={i}
                                 initial={{
                                     opacity: 1,
                                     y: 0,
-                                    x: Math.random() * 100 - 50,
-                                    scale: Math.random() * 0.5 + 0.5,
+                                    x: spark.initialX,
+                                    scale: spark.initialScale,
                                 }}
                                 animate={{
                                     opacity: 0,
-                                    y: -150 - Math.random() * 100,
-                                    x: Math.random() * 200 - 100,
+                                    y: spark.animateY,
+                                    x: spark.animateX,
                                 }}
                                 transition={{
-                                    duration: 1.5 + Math.random(),
-                                    delay: Math.random() * 2,
+                                    duration: spark.duration,
+                                    delay: spark.delay,
                                     repeat: Infinity,
                                 }}
                                 className="absolute bottom-0 left-1/2 w-2 h-2 rounded-full pointer-events-none"
                                 style={{
-                                    background: `radial-gradient(circle, ${Math.random() > 0.5 ? '#F97316' : '#FBBF24'
-                                        }, transparent)`,
+                                    background: `radial-gradient(circle, ${spark.isOrange ? '#F97316' : '#FBBF24'}, transparent)`,
                                 }}
                             />
                         ))}

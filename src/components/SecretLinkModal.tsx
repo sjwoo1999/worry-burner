@@ -1,7 +1,7 @@
 'use client';
 
 // 비밀 링크 안내 모달
-import { useState } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import ShareButtons from './ShareButtons';
 
@@ -16,8 +16,7 @@ export default function SecretLinkModal({
     isOpen,
     worryId,
     secretUrl,
-    onClose
-}: SecretLinkModalProps) {
+}: Omit<SecretLinkModalProps, 'onClose'> & { onClose?: () => void }) {
 
     if (!isOpen) return null;
 
@@ -83,14 +82,14 @@ export default function SecretLinkModal({
                     />
 
                     {/* 고민 보러가기 버튼 */}
-                    <a
+                    <Link
                         href={`/burn/${worryId}`}
-                        className="block w-full mt-4 py-4 text-center bg-[var(--primary)] 
+                        className="block w-full mt-4 py-4 text-center bg-[var(--primary)]
                        hover:bg-[var(--primary)]/90 rounded-lg text-white font-bold
                        transition-colors"
                     >
                         내 고민 보러가기 →
-                    </a>
+                    </Link>
                 </motion.div>
             </motion.div>
         </AnimatePresence>

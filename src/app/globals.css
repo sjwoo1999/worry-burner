@@ -1,7 +1,7 @@
-@import "tailwindcss";
-
 /* Google Fonts - 고운바탕 + 나눔펜스크립트 */
 @import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&display=swap');
+
+@import "tailwindcss";
 
 /* ========================================
    Ember & Ash 테마 - 디지털 캠프파이어

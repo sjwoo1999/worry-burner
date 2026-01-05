@@ -1,7 +1,7 @@
 'use client';
 
 // 24시간 카운트다운 타이머
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 interface CountdownProps {
@@ -16,34 +16,42 @@ interface TimeLeft {
     total: number;
 }
 
+// Helper function to calculate time left (defined outside component for initializer use)
+function calculateTimeLeftHelper(expiresAt: number): TimeLeft {
+    const now = Date.now();
+    const difference = expiresAt - now;
+
+    if (difference <= 0) {
+        return { hours: 0, minutes: 0, seconds: 0, total: 0 };
+    }
+
+    return {
+        hours: Math.floor(difference / (1000 * 60 * 60)),
+        minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((difference % (1000 * 60)) / 1000),
+        total: difference,
+    };
+}
+
 export default function Countdown({ expiresAt, onExpired }: CountdownProps) {
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({ hours: 0, minutes: 0, seconds: 0, total: 0 });
-    const [isExpired, setIsExpired] = useState(false);
+    // Use initializer functions to avoid setState in effect
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>(() => calculateTimeLeftHelper(expiresAt));
+    const [isExpired, setIsExpired] = useState(() => calculateTimeLeftHelper(expiresAt).total <= 0);
+    const onExpiredRef = useRef(onExpired);
+
+    // Keep ref updated
+    useEffect(() => {
+        onExpiredRef.current = onExpired;
+    }, [onExpired]);
 
     const calculateTimeLeft = useCallback((): TimeLeft => {
-        const now = Date.now();
-        const difference = expiresAt - now;
-
-        if (difference <= 0) {
-            return { hours: 0, minutes: 0, seconds: 0, total: 0 };
-        }
-
-        return {
-            hours: Math.floor(difference / (1000 * 60 * 60)),
-            minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-            seconds: Math.floor((difference % (1000 * 60)) / 1000),
-            total: difference,
-        };
+        return calculateTimeLeftHelper(expiresAt);
     }, [expiresAt]);
 
     useEffect(() => {
-        // 초기값 설정
-        const initial = calculateTimeLeft();
-        setTimeLeft(initial);
-
-        if (initial.total <= 0) {
-            setIsExpired(true);
-            onExpired?.();
+        // If already expired on mount, call callback
+        if (isExpired) {
+            onExpiredRef.current?.();
             return;
         }
 
@@ -54,13 +62,13 @@ export default function Countdown({ expiresAt, onExpired }: CountdownProps) {
 
             if (newTimeLeft.total <= 0) {
                 setIsExpired(true);
-                onExpired?.();
+                onExpiredRef.current?.();
                 clearInterval(timer);
             }
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [expiresAt, calculateTimeLeft, onExpired]);
+    }, [expiresAt, calculateTimeLeft, isExpired]);
 
     // 숫자 포맷팅 (2자리)
     const pad = (num: number) => String(num).padStart(2, '0');

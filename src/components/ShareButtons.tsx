@@ -67,7 +67,7 @@ export default function ShareButtons({
             await navigator.clipboard.writeText(url);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
-        } catch (err) {
+        } catch {
             // 폴백: 구형 브라우저
             const textArea = document.createElement('textarea');
             textArea.value = url;

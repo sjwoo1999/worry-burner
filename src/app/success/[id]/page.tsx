@@ -1,19 +1,21 @@
 'use client';
 
 // 성공 페이지 - 비밀 링크 안내
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import ShareButtons from '@/components/ShareButtons';
 
 export default function SuccessPage() {
     const params = useParams();
     const id = params.id as string;
-    const [secretUrl, setSecretUrl] = useState('');
 
-    useEffect(() => {
+    // Compute URL using useMemo instead of useState + useEffect
+    const secretUrl = useMemo(() => {
+        if (typeof window === 'undefined') return '';
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || window.location.origin;
-        setSecretUrl(`${baseUrl}/burn/${id}`);
+        return `${baseUrl}/burn/${id}`;
     }, [id]);
 
     return (
@@ -73,23 +75,23 @@ export default function SuccessPage() {
                 />
 
                 {/* 고민 보러가기 */}
-                <a
+                <Link
                     href={`/burn/${id}`}
                     className="block w-full mt-4 py-4 text-center bg-[var(--primary)]
                      hover:bg-[var(--primary)]/90 rounded-lg text-white font-bold
                      transition-colors"
                 >
                     내 고민 보러가기 →
-                </a>
+                </Link>
 
                 {/* 홈으로 */}
                 <div className="text-center mt-6">
-                    <a
+                    <Link
                         href="/"
                         className="text-[var(--muted)] hover:text-[var(--accent)] transition-colors text-sm"
                     >
                         새 고민 작성하기
-                    </a>
+                    </Link>
                 </div>
             </motion.div>
         </div>

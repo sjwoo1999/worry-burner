@@ -2,6 +2,7 @@
 
 // 엿보기 페이지 - 다른 사람의 고민을 랜덤으로 조회
 import { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import WorryView from '@/components/WorryView';
 import PatPat from '@/components/PatPat';
@@ -162,12 +163,12 @@ export default function PeekPage() {
                             🔀 다른 고민 보기
                         </motion.button>
 
-                        <a
+                        <Link
                             href="/"
                             className="text-[var(--muted)] hover:text-[var(--accent)] transition-colors text-sm"
                         >
                             ← 내 고민 작성하기
-                        </a>
+                        </Link>
                     </motion.div>
                 )}
             </div>

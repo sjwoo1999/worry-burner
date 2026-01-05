@@ -2,13 +2,12 @@
 
 // 메인 페이지 - 고민 작성 폼
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import WriteForm from '@/components/WriteForm';
 import SecretLinkModal from '@/components/SecretLinkModal';
 
 export default function HomePage() {
-  const router = useRouter();
   const [worryId, setWorryId] = useState<string | null>(null);
   const [secretUrl, setSecretUrl] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
@@ -52,13 +51,13 @@ export default function HomePage() {
         transition={{ delay: 0.8 }}
         className="mt-12 text-center"
       >
-        <a
+        <Link
           href="/peek"
           className="text-[var(--muted)] hover:text-[var(--accent)] transition-colors
                      text-sm underline underline-offset-4"
         >
           다른 사람의 고민 엿보기 👀
-        </a>
+        </Link>
       </motion.footer>
 
       {/* 비밀 링크 모달 */}

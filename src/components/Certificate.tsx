@@ -2,6 +2,7 @@
 
 // 소각 인증서 컴포넌트 (html2canvas로 이미지 생성)
 import { useRef, useCallback, useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
 
@@ -83,7 +84,7 @@ export default function Certificate({ burnedAt, onClose }: CertificateProps) {
                 {/* 메인 메시지 */}
                 <div className="my-8">
                     <p className="font-hand text-[var(--accent)] text-2xl leading-relaxed">
-                        "제 고민이<br />한 줌의 재가 되었습니다"
+                        &ldquo;제 고민이<br />한 줌의 재가 되었습니다&rdquo;
                     </p>
                 </div>
 
@@ -152,12 +153,12 @@ export default function Certificate({ burnedAt, onClose }: CertificateProps) {
 
             {/* 새 고민 작성 링크 */}
             <div className="text-center mt-6">
-                <a
+                <Link
                     href="/"
                     className="text-[var(--muted)] hover:text-[var(--accent)] transition-colors"
                 >
                     새 고민 작성하기 →
-                </a>
+                </Link>
             </div>
         </motion.div>
     );

@@ -70,7 +70,7 @@ export default function WorryView({
                         <span className="text-6xl mb-4">🔥</span>
                         <p className="text-xl font-bold text-[var(--text)]">소각 완료</p>
                         <p className="font-hand text-[var(--accent)] text-lg mt-3">
-                            "마음이 한결 가벼워졌길 바라요"
+                            &ldquo;마음이 한결 가벼워졌길 바라요&rdquo;
                         </p>
                     </motion.div>
                 )}

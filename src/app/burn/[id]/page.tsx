@@ -3,6 +3,7 @@
 // 소각 페이지 - 고민 조회 + 소각 애니메이션
 import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import WorryView from '@/components/WorryView';
 import Countdown from '@/components/Countdown';
@@ -121,13 +122,13 @@ export default function BurnPage() {
                     <p className="text-[var(--muted)] mb-8">
                         이 고민은 이미 재가 되었거나, 존재하지 않습니다.
                     </p>
-                    <a
+                    <Link
                         href="/"
                         className="inline-block px-6 py-3 bg-[var(--primary)] rounded-lg
                        text-white font-medium hover:bg-[var(--primary)]/90"
                     >
                         새 고민 작성하기
-                    </a>
+                    </Link>
                 </div>
             </div>
         );
@@ -139,13 +140,13 @@ export default function BurnPage() {
             <div className="fixed inset-0 bg-vignette -z-10" />
 
             {/* 홈 링크 */}
-            <a
+            <Link
                 href="/"
-                className="fixed top-4 left-4 md:top-6 md:left-6 text-[var(--muted)] 
+                className="fixed top-4 left-4 md:top-6 md:left-6 text-[var(--muted)]
                          hover:text-[var(--accent)] transition-colors text-sm z-10"
             >
                 ← 새 고민 작성하기
-            </a>
+            </Link>
 
             <div className="w-full max-w-2xl">
                 {/* 인증서 모드 */}
@@ -224,14 +225,14 @@ export default function BurnPage() {
                                         📜 소각 인증서 받기
                                     </motion.button>
 
-                                    <a
+                                    <Link
                                         href="/"
                                         className="block w-full py-4 bg-[var(--surface)] border border-[var(--muted)]/30
                                rounded-lg text-[var(--text)] font-medium text-center
                                hover:border-[var(--primary)]/50 transition-colors"
                                     >
                                         새 고민 작성하기
-                                    </a>
+                                    </Link>
                                 </div>
                             )}
                         </motion.div>
