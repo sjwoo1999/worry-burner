@@ -1,26 +1,338 @@
 @import "tailwindcss";
 
+/* ========================================
+   Ember & Ash 테마 - 디지털 캠프파이어
+   ======================================== */
+
+/* 웜 다크모드 색상 팔레트 */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 배경색 - 깊은 밤의 숲 */
+  --background: #1C1917;
+  --surface: #292524;
+  --surface-light: #44403C;
+
+  /* 불꽃의 색 */
+  --primary: #E25822;
+  --primary-hover: #FF6F45;
+  --ember-glow: #FF4500;
+  --spark-gold: #FFA725;
+  --flame-yellow: #FBBF24;
+
+  /* 텍스트 - 양피지색 */
+  --text: #F5E8D8;
+  --text-muted: #A8A29E;
+  --foreground: #F5E8D8;
+
+  /* 상태색 */
+  --danger: #EF4444;
+  --accent: #FFA725;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-light: var(--surface-light);
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-muted: var(--text-muted);
+  --color-danger: var(--danger);
+  --color-ember-glow: var(--ember-glow);
+  --color-spark-gold: var(--spark-gold);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Google Fonts - 고운바탕 + 나눔펜스크립트 */
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&display=swap');
 
+/* 기본 스타일 */
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Gowun Batang', serif;
+  min-height: 100vh;
+}
+
+/* 비네팅 효과 - 중앙 밝고 외곽 어둡게 */
+.bg-vignette {
+  background: radial-gradient(ellipse at center,
+      #292524 0%,
+      #1C1917 70%,
+      #0C0A09 100%);
+}
+
+/* ========================================
+   종이 질감 (Paper Texture)
+   ======================================== */
+
+/* 노이즈 텍스처 오버레이 */
+.bg-noise::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* 줄 그어진 노트 + 노이즈 */
+.paper-texture {
+  background-color: #292524;
+  background-image:
+    linear-gradient(transparent 1.9rem, rgba(245, 232, 216, 0.04) 1.9rem),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 100% 2rem, auto;
+  border: 1px solid rgba(245, 232, 216, 0.1);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(226, 88, 34, 0.05);
+  position: relative;
+}
+
+/* ========================================
+   불꽃 버튼 (Fire Button)
+   ======================================== */
+
+/* 숨 쉬는 불꽃 효과 */
+@keyframes breathe {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
+    filter: brightness(1);
+  }
+
+  50% {
+    box-shadow: 0 0 35px rgba(255, 69, 0, 0.7);
+    filter: brightness(1.05);
+  }
+}
+
+.btn-fire {
+  background: linear-gradient(to top,
+      #CC3300 0%,
+      #E25822 50%,
+      #FFA725 100%);
+  animation: breathe 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-fire:hover {
+  background: linear-gradient(to top,
+      #E25822 0%,
+      #FF6F45 50%,
+      #FBBF24 100%);
+  box-shadow: 0 0 50px rgba(255, 69, 0, 0.6);
+  transform: translateY(-3px) scale(1.02);
+}
+
+.btn-fire:active {
+  transform: translateY(0) scale(0.98);
+  filter: brightness(0.95);
+}
+
+/* ========================================
+   소각 애니메이션 (Burn Animation)
+   ======================================== */
+
+@keyframes burn-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 30px rgba(226, 88, 34, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 60px rgba(255, 69, 0, 0.8);
+  }
+}
+
+.burn-glow {
+  animation: burn-glow 1.5s ease-in-out infinite;
+}
+
+/* 소각 마스크 애니메이션 */
+@keyframes burn-mask {
+  0% {
+    mask-position: 0% 100%;
+    -webkit-mask-position: 0% 100%;
+  }
+
+  100% {
+    mask-position: 0% -100%;
+    -webkit-mask-position: 0% -100%;
+  }
+}
+
+.burning {
+  mask-image: url('/textures/noise-mask.png');
+  mask-size: 100% 200%;
+  -webkit-mask-image: url('/textures/noise-mask.png');
+  -webkit-mask-size: 100% 200%;
+  animation: burn-mask 3s ease-out forwards;
+}
+
+/* 불씨 파티클 */
+@keyframes ember {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-120px) scale(0) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+.ember {
+  animation: ember 1.8s ease-out forwards;
+}
+
+/* ========================================
+   카운트다운 타이머
+   ======================================== */
+
+.countdown-number {
+  font-family: 'Gowun Batang', serif;
+  text-shadow:
+    0 0 20px rgba(226, 88, 34, 0.5),
+    0 0 40px rgba(255, 167, 37, 0.3);
+}
+
+/* 긴급 상태 펄스 */
+@keyframes urgent-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.countdown-urgent {
+  animation: urgent-pulse 1s ease-in-out infinite;
+  color: var(--ember-glow) !important;
+}
+
+/* ========================================
+   모달 & 오버레이
+   ======================================== */
+
+.modal-overlay {
+  background: rgba(12, 10, 9, 0.92);
+  backdrop-filter: blur(8px);
+}
+
+/* ========================================
+   손글씨 폰트 스타일
+   ======================================== */
+
+.font-hand {
+  font-family: 'Nanum Pen Script', cursive;
+}
+
+/* ========================================
+   인증서 스타일
+   ======================================== */
+
+.certificate {
+  background: linear-gradient(180deg,
+      #292524 0%,
+      #1C1917 100%);
+  border: 2px solid rgba(255, 167, 37, 0.25);
+  box-shadow:
+    0 0 30px rgba(226, 88, 34, 0.15),
+    inset 0 0 60px rgba(226, 88, 34, 0.05);
+}
+
+/* ========================================
+   토닥토닥 버튼
+   ======================================== */
+
+@keyframes patpat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.patpat-animation {
+  animation: patpat 0.5s ease-in-out;
+}
+
+/* ========================================
+   스크롤바 (따뜻한 톤)
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-light);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--spark-gold);
+}
+
+/* ========================================
+   페이드 인 애니메이션
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* ========================================
+   유틸리티 클래스
+   ======================================== */
+
+/* 불꽃 그림자 */
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
+}
+
+.shadow-glow-intense {
+  box-shadow: 0 0 40px rgba(255, 69, 0, 0.6);
+}
+
+/* 양피지색 텍스트 */
+.text-parchment {
+  color: #F5E8D8;
+}
+
+/* 재 회색 텍스트 */
+.text-ash {
+  color: #A8A29E;
 }
