@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Google Fonts - 고운바탕 + 나눔펜스크립트 */
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&display=swap');
+
 /* ========================================
    Ember & Ash 테마 - 디지털 캠프파이어
    ======================================== */
@@ -40,9 +43,6 @@
   --color-ember-glow: var(--ember-glow);
   --color-spark-gold: var(--spark-gold);
 }
-
-/* Google Fonts - 고운바탕 + 나눔펜스크립트 */
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&display=swap');
 
 /* 기본 스타일 */
 body {

@@ -18,7 +18,7 @@ export default function BurnAnimation({ isPlaying, onComplete, children }: BurnA
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [showEmbers, setShowEmbers] = useState(false);
     const [animationComplete, setAnimationComplete] = useState(false);
-    const [fireAnimation, setFireAnimation] = useState<unknown>(null);
+    const [fireAnimation, setFireAnimation] = useState<object | null>(null);
 
     // Lottie 애니메이션 로드
     useEffect(() => {
